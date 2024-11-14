@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class BookStore {
@@ -72,6 +73,7 @@ public class BookStore {
                     if (user.containsKey(loginUsername) && user.get(loginUsername).equals(loginPassword)) {
                         System.out.println("Login successful!");
                         keys = loginUsername;
+                        exit = true;
                     } else {
                         System.out.println("Invalid username or password.");
                     }
@@ -352,6 +354,11 @@ public class BookStore {
                                     back = false;
                                     tmploop = false;
                                     exit = false;
+                                    try (PrintWriter writer = new PrintWriter(new FileWriter(file2))) {
+                                        for (Map.Entry<String, Integer> entry : userbalance.entrySet()) {
+                                            writer.println(entry.getKey() + " " + entry.getValue());
+                                        }
+                                    }
                                     break;
                                 case 1:
                                     if (userbalance.get(keys) >= allprice) {
@@ -377,6 +384,11 @@ public class BookStore {
                                             basketeer.clear();
                                             exit = false;
                                         } else if (choice == 2) {
+                                            try (PrintWriter writer = new PrintWriter(new FileWriter(file2))) {
+                                                for (Map.Entry<String, Integer> entry : userbalance.entrySet()) {
+                                                    writer.println(entry.getKey() + " " + entry.getValue());
+                                                }
+                                            }
                                             exit = true;
                                         } else {
                                             System.out.println(
@@ -482,6 +494,11 @@ public class BookStore {
                                 int deposit = sc.nextInt();
                                 userbalance.put(keys, userbalance.get(keys) + deposit);
                                 System.out.println("Deposit " + deposit + " Baht is done");
+                                try (PrintWriter writer = new PrintWriter(new FileWriter(file2))) {
+                                    for (Map.Entry<String, Integer> entry : userbalance.entrySet()) {
+                                        writer.println(entry.getKey() + " " + entry.getValue());
+                                    }
+                                }
                                 Thread.sleep(1500);
                                 break;
                             case 3:
@@ -491,6 +508,11 @@ public class BookStore {
                                 if (withdraw <= userbalance.get(keys)) {
                                     userbalance.put(keys, userbalance.get(keys) - withdraw);
                                     System.out.println("Withdraw " + withdraw + " Baht is done");
+                                    try (PrintWriter writer = new PrintWriter(new FileWriter(file2))) {
+                                        for (Map.Entry<String, Integer> entry : userbalance.entrySet()) {
+                                            writer.println(entry.getKey() + " " + entry.getValue());
+                                        }
+                                    }
                                     Thread.sleep(1500);
                                 } else {
                                     System.out.println("You don't have enough money");
